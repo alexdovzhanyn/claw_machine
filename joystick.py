@@ -2,13 +2,15 @@ import pygame
 from time import sleep
 import RPi.GPIO as GPIO
 
-# Define some stuff
+# Define colours for pygame
 BLACK    = (   0,   0,   0)
 WHITE    = ( 255, 255, 255)
-DIR = 23
-STEP = 24
-CW = 1
-CCW = 0
+
+# --------------- Stepper motor setup -----------------------
+DIR = 23 #GPIO direction pin
+STEP = 24 #GPIO step pin
+CW = 1 # Clockwise
+CCW = 0 # Counterclockwise
 SPR = 240
 
 GPIO.setmode(GPIO.BCM)
@@ -16,12 +18,15 @@ GPIO.setup(DIR, GPIO.OUT)
 GPIO.setup(STEP, GPIO.OUT)
 GPIO.output(DIR, CW)
 
-step_count = SPR
-delay = 0.01
+delay = 0.01 # How long we wait between GPIO outputs
 
-# This is a simple class that will help us print to the screen
-# It has nothing to do with the joysticks, just outputting the
-# information.
+xAxisMoving = False
+yAxisMoving = False
+
+# ----------------------------------------------------------
+
+done = False
+
 class TextPrint:
     def __init__(self):
         self.reset()
@@ -44,26 +49,15 @@ class TextPrint:
         self.x -= 10
     
 
+# -------- PyGame Initialization -------
 pygame.init()
- 
-# Set the width and height of the screen [width,height]
-size = [500, 700]
+size = [1280, 720]
 screen = pygame.display.set_mode(size)
-
-pygame.display.set_caption("My Game")
-
-#Loop until the user clicks the close button.
-done = False
-xAxisMoving = False
-
-# Used to manage how fast the screen updates
+pygame.display.set_caption("Claw Machine Debugger Module")
 clock = pygame.time.Clock()
-
-# Initialize the joysticks
 pygame.joystick.init()
-    
-# Get ready to print
 textPrint = TextPrint()
+# -------------------------------------
 
 # -------- Main Program Loop -----------
 while done==False:
@@ -78,7 +72,11 @@ while done==False:
         if event.type == pygame.JOYBUTTONUP:
             print("Joystick button released.")
         if event.type == pygame.JOYAXISMOTION and event.dict['axis'] == 1:
-            if round(event.dict['value']) != 0:
+            if round(event.dict['value']) == -1:
+                GPIO.output(DIR, CCW)
+                xAxisMoving = True
+            elif round(event.dict['value']) == 1:
+                GPIO.output(DIR, CW)
                 xAxisMoving = True
             elif round(event.dict['value']) == 0:
                 xAxisMoving = False
@@ -155,7 +153,4 @@ while done==False:
     # Limit to 20 frames per second
     clock.tick(20)
     
-# Close the window and quit.
-# If you forget this line, the program will 'hang'
-# on exit if running from IDLE.
 pygame.quit ()
