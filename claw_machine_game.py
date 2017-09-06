@@ -11,7 +11,7 @@ class ClawMachineGame:
         print 'Axes Detected: %s' % self.joystick.get_numaxes()
         print 'Buttons Detected: %s' % self.joystick.get_numbuttons()
         
-        self.claw = Claw(23, 24, 1)
+        self.claw = Claw(23, 24, 1, 20, 21, 1)
         
     def start(self):
         while True:
@@ -26,6 +26,13 @@ class ClawMachineGame:
                 self.claw.toggleMoveRight()
             elif values[1] == 0:
                 self.claw.stopMovementOnAxis('x')
+                
+            if values[0] < 0:
+                self.claw.toggleMoveBack()
+            elif values[0] > 0:
+                self.claw.toggleMoveForward()
+            elif values[0] == 0:
+                self.claw.stopMovementOnAxis('y')
                 
     def getJoyStickValues(self):
         out = [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
