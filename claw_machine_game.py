@@ -32,6 +32,15 @@ class ClawMachineGame:
         self.claw.toggleMoveRight()
       elif values[1] == 0:
         self.claw.stopMovementOnAxis('x')
+
+      # Y AXIS
+      # This axis is a bit different from X and Z because its controlled by 2 seperate buttons rather than the joystick itself
+      if values[5] > 0
+      	self.claw.toggleMoveUp()
+      elif values[6] > 0
+      	self.claw.toggleMoveDown()
+      elif values[5] == 0 && values[6] == 0
+      	self.claw.stopMovementOnAxis('y')
             
       # Z AXIS
       if values[0] < 0:
