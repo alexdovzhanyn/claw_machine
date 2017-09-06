@@ -1,4 +1,4 @@
-import claw_machine_game
+from claw_machine_game import ClawMachineGame
 
 game = ClawMachineGame()
 
