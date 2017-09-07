@@ -7,12 +7,12 @@ class ClawMachineGame:
     self.joystick = pygame.joystick.Joystick(0)
     self.joystick.init()
     self.claw = Claw({
-  		x_direction_pin: 23,
-  		x_step_pin: 24,
-  		y_direction_pin: 20,
-  		y_step_pin: 17,
-  		z_direction_pin: 18,
-  		z_step_pin: 21
+  		'x_direction_pin': 23,
+  		'x_step_pin': 24,
+  		'y_direction_pin': 19,
+  		'y_step_pin': 26,
+  		'z_direction_pin': 20,
+  		'z_step_pin': 21
   	})
 
     print 'Initialized Joystick : %s' % self.joystick.get_name()
@@ -35,17 +35,19 @@ class ClawMachineGame:
 
       # Y AXIS
       # This axis is a bit different from X and Z because its controlled by 2 seperate buttons rather than the joystick itself
-      if values[5] > 0
+      if values[5] > 0:
       	self.claw.toggleMoveUp()
-      elif values[6] > 0
+      elif values[6] > 0:
       	self.claw.toggleMoveDown()
-      elif values[5] == 0 && values[6] == 0
+      elif values[5] == 0 and values[6] == 0:
       	self.claw.stopMovementOnAxis('y')
             
       # Z AXIS
       if values[0] < 0:
+        print 'back'
         self.claw.toggleMoveBack()
       elif values[0] > 0:
+        print 'forwad'
         self.claw.toggleMoveForward()
       elif values[0] == 0:
         self.claw.stopMovementOnAxis('z')

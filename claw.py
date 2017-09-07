@@ -10,6 +10,7 @@ class Claw:
     self.z_direction_pin = pin_map['z_direction_pin']
     self.z_step_pin = pin_map['z_step_pin']
     self.xAxisMoving = False
+    self.yAxisMoving = False
     self.zAxisMoving = False
     self.delay = 0.001 # How long we wait between GPIO outputs
 
@@ -22,7 +23,7 @@ class Claw:
     GPIO.output(self.y_direction_pin, 1)
     GPIO.setup(self.z_direction_pin, GPIO.OUT)
     GPIO.setup(self.z_step_pin, GPIO.OUT)
-    GPIO.output(self.z_direction_pin, 1)
+    GPIO.output(self.z_direction_pin, 0)
     
   def toggleMoveLeft(self):
     GPIO.output(self.x_direction_pin, 0)
@@ -63,6 +64,7 @@ class Claw:
       GPIO.output(self.x_step_pin, GPIO.LOW)
       sleep(self.delay)
     if self.yAxisMoving:
+      print self.y_step_pin
       GPIO.output(self.y_step_pin, GPIO.HIGH)
       sleep(self.delay)
       GPIO.output(self.y_step_pin, GPIO.LOW)
